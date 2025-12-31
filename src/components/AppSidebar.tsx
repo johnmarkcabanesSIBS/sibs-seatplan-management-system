@@ -26,9 +26,8 @@ const data = {
       url: "#",
       icon: Home,
       items: [
-        { title: "Profile", url: "#" },
-        { title: "Dashboard", url: "/dashboard" },
-        { title: "Technical Issues", url: "#" },
+        { title: "Profile", url: "/profile" },
+        { title: "Dashboard", url: "/dashboard" }
       ],
     },
     {

@@ -12,6 +12,7 @@ import Lobby from "./components/seatgroups/Lobby"
 import RecruitmentArea from "./components/seatgroups/RecruitmentArea"
 import TaAndPeCubicle from "./components/seatgroups/TaAndPeCubicle"
 import DashBoard from "./components/home/DashBoard"
+import Profile from "./components/home/Profile"
 
 export default function Page() {
   return (
@@ -37,6 +38,7 @@ export default function Page() {
             <div className="@container/main flex flex-1 flex-col gap-2 md:gap-4 p-3 sm:p-4 md:p-6">
               <div className="flex flex-col items-center justify-center py-2 sm:py-4 md:py-6 overflow-x-auto">
                 <Routes>
+                  <Route path="/profile" element={<Profile/>} />
                   <Route path="/dashboard" element={<DashBoard/>} />
                   <Route path="/right-wing" element={<RightWing />} />
                   <Route path="/left-wing" element={<LeftWing />} />

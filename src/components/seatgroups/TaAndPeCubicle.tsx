@@ -1,74 +1,79 @@
 "use client";
 
-export default function Lobby() {
-  const handleBoxClick = (group: number, col: number, row: number) => {
-    console.log(`Clicked seat at Group ${group}, Column ${col}, Row ${row}`);
+export default function TaAndPeCubicle() {
+  const handleBoxClick = (
+    group: number,
+    column: number,
+    index: number
+  ) => {
+    console.log(`Clicked seat at Group ${group}, Column ${column}, Index ${index}`);
   };
 
   const boxClass =
     "border border-gray-400 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 active:scale-95 transition-all duration-200 shadow-sm w-[22vw] h-[10vh] xs:w-[20vw] sm:w-[14vw] md:w-[8vw] lg:w-[6vw] min-w-[60px] min-h-[45px] max-w-[120px] max-h-[70px]";
 
-  const renderSeat = (group: number, col: number, row: number) => (
-    <div
-      key={row}
-      className={boxClass}
-      onClick={() => handleBoxClick(group, col, row)}
-    >
-      <span className="text-[3vw] sm:text-xs md:text-sm font-semibold text-center">
-        Vacant
-      </span>
-      <span className="text-[2.5vw] sm:text-[10px] md:text-xs text-gray-500 text-center">
-        No PC
-      </span>
-    </div>
-  );
-
-  const renderColumn = (group: number, col: number) => (
-    <div className="flex flex-col gap-[2vw] sm:gap-[1vw]" key={col}>
-      {Array.from({ length: 2 }).map((_, row) => renderSeat(group, col, row))}
-    </div>
-  );
-
-  const renderGroup = (group: number) => (
-    <div
-      className="flex flex-row gap-[4vw] sm:gap-[2vw] items-start justify-center"
-      key={group}
-    >
-      {Array.from({ length: 2 }).map((_, col) => renderColumn(group, col))}
-    </div>
-  );
-
-  const renderMiddleBottomSeat = () => (
-    <div className="flex justify-center mt-8">
-      {renderSeat(0, 0, 0)}
-    </div>
-  );
+  // Top group: 3 columns
+  const topGroupCounts = [2, 1, 1];
 
   return (
-    <div className="flex flex-col items-center justify-start gap-6 px-3 sm:px-6 pt-4 w-full min-h-screen bg-white">
-      <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#042C51] mb-4 text-center leading-tight">
-        Lobby
+    <div className="flex flex-col items-center justify-start gap-12 px-3 sm:px-6 pt-8 w-full min-h-screen bg-white">
+      <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-[#042C51] mb-4 text-center leading-tight">
+        TA and PE Cubicle
       </h2>
 
-      <div className="flex flex-row gap-[30vw] flex-wrap justify-center w-full items-start">
-        {/* Left Wing Cubicle */}
-        <div className="flex flex-col items-center gap-2">
-          <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#042C51] mb-2 text-center">
-            Right Wing Cubicle
-          </h3>
-          {renderGroup(1)}
-        </div>
-
-        {/* Right Wing Cubicle */}
-        <div className="flex flex-col items-center gap-2">
-          <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#042C51] mb-2 text-center">
-            Left Wing Cubicle
-          </h3>
-          {renderGroup(2)}
+      {/* Top group with title */}
+      <div className="flex flex-col items-center gap-4 w-full">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#042C51] mb-2 text-center">
+          PE Cubicle
+        </h3>
+        <div className="flex flex-row justify-center items-end gap-[3vw] sm:gap-[1.5vw] w-full md:w-auto flex-wrap">
+          {topGroupCounts.map((seatCount, colIndex) => (
+            <div
+              key={colIndex}
+              className="flex flex-col items-center justify-end gap-[2vw] sm:gap-[1vw]"
+              style={{ minHeight: "150px" }}
+            >
+              {Array.from({ length: seatCount }).map((_, seatIndex) => (
+                <div
+                  key={seatIndex}
+                  onClick={() => handleBoxClick(1, colIndex + 1, seatIndex)}
+                  className={boxClass}
+                >
+                  <span className="text-[3vw] sm:text-xs md:text-sm font-semibold">
+                    Vacant
+                  </span>
+                  <span className="text-[2.5vw] sm:text-[10px] md:text-xs text-gray-500">
+                    No PC
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 
-      {renderMiddleBottomSeat()}
+      {/* Bottom group with title */}
+      <div className="flex flex-col items-center gap-4 w-full">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#042C51] mb-2 text-center">
+          TA Cubicle
+        </h3>
+        <div className="flex flex-row justify-center items-center gap-[2vw] sm:gap-[1vw] mt-2">
+          {Array.from({ length: 4 }).map((_, seatIndex) => (
+            <div
+              key={seatIndex}
+              onClick={() => handleBoxClick(2, seatIndex + 1, 0)}
+              className={boxClass}
+            >
+              <span className="text-[3vw] sm:text-xs md:text-sm font-semibold">
+                Vacant
+              </span>
+              <span className="text-[2.5vw] sm:text-[10px] md:text-xs text-gray-500">
+                No PC
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
