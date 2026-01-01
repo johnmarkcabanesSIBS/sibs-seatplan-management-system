@@ -1,8 +1,20 @@
 "use client";
 
+import { useState } from "react";
+import { SeatBookingForm } from "../seatform/SeatBookingForm";
+
 export default function TrainingRoom() {
+  const [selectedSeat, setSelectedSeat] = useState<{ group: number; col?: number; row?: number } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleBoxClick = (group: number, col: number, row: number) => {
+    setSelectedSeat({ group, col, row });
+    setIsModalOpen(true);
     console.log(`Clicked seat at Group ${group}, Column ${col}, Row ${row}`);
+  };
+
+  const handleBookingSubmit = (seatInfo: any, customerName: string) => {
+    console.log("Booking:", seatInfo, "Customer:", customerName);
   };
 
   const boxClass =
@@ -14,6 +26,7 @@ export default function TrainingRoom() {
       className={boxClass}
       onClick={() => handleBoxClick(group, col, row)}
     >
+      {/* Visual placeholder only */}
       <span className="text-[3vw] sm:text-xs md:text-sm font-semibold text-center">
         Vacant
       </span>
@@ -38,7 +51,6 @@ export default function TrainingRoom() {
     </div>
   );
 
-  // Two extra seats at the bottom
   const renderBottomSeats = () => (
     <div className="flex flex-row gap-[4vw] sm:gap-[2vw] items-center justify-center mt-4">
       {Array.from({ length: 2 }).map((_, i) => renderSeat(0, i, 0))}
@@ -47,7 +59,6 @@ export default function TrainingRoom() {
 
   return (
     <div className="flex flex-col items-center justify-start gap-4 px-3 sm:px-6 pt-4 w-full min-h-screen bg-white">
-      {/* Title */}
       <h2 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-[#042C51] mb-2 text-center leading-tight">
         Training Room
       </h2>
@@ -60,6 +71,14 @@ export default function TrainingRoom() {
 
       {/* Bottom 2 seats */}
       {renderBottomSeats()}
+
+      {/* Seat Booking Form */}
+      <SeatBookingForm
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        seatInfo={selectedSeat}
+        onSubmit={handleBookingSubmit}
+      />
     </div>
   );
 }

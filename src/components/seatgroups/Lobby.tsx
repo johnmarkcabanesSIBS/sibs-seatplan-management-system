@@ -1,11 +1,22 @@
 "use client";
 
+import { useState } from "react";
+import { SeatBookingForm } from "../seatform/SeatBookingForm";
+
 export default function Lobby() {
+  const [selectedSeat, setSelectedSeat] = useState<{ group: number; col?: number; row?: number } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleBoxClick = (group: number, col: number, row: number) => {
+    setSelectedSeat({ group, col, row });
+    setIsModalOpen(true);
     console.log(`Clicked seat at Group ${group}, Column ${col}, Row ${row}`);
   };
 
-  // Box style matching the RightWing sizes
+  const handleBookingSubmit = (seatInfo: any, customerName: string) => {
+    console.log("Booking:", seatInfo, "Customer:", customerName);
+  };
+
   const boxClass =
     "border border-gray-400 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 active:scale-95 transition-all duration-200 shadow-sm w-[22vw] h-[10vh] xs:w-[20vw] sm:w-[14vw] md:w-[8vw] lg:w-[6vw] min-w-[60px] min-h-[45px] max-w-[120px] max-h-[70px]";
 
@@ -15,6 +26,7 @@ export default function Lobby() {
       className={boxClass}
       onClick={() => handleBoxClick(group, col, row)}
     >
+      {/* Visual placeholder */}
       <span className="text-[3vw] sm:text-xs md:text-sm font-semibold text-center">
         Vacant
       </span>
@@ -52,7 +64,7 @@ export default function Lobby() {
       </h2>
 
       <div className="flex flex-row gap-[30vw] flex-wrap justify-center w-full items-start">
-        {/* Left Wing Cubicle */}
+        {/* Right Wing Cubicle */}
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#042C51] mb-2 text-center">
             Right Wing Cubicle
@@ -60,7 +72,7 @@ export default function Lobby() {
           {renderGroup(1)}
         </div>
 
-        {/* Right Wing Cubicle */}
+        {/* Left Wing Cubicle */}
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#042C51] mb-2 text-center">
             Left Wing Cubicle
@@ -70,6 +82,14 @@ export default function Lobby() {
       </div>
 
       {renderMiddleBottomSeat()}
+
+      {/* Seat Booking Form */}
+      <SeatBookingForm
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        seatInfo={selectedSeat}
+        onSubmit={handleBookingSubmit}
+      />
     </div>
   );
 }

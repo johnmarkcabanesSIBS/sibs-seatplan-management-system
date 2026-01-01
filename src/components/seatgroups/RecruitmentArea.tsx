@@ -1,8 +1,20 @@
 "use client";
 
+import { useState } from "react";
+import { SeatBookingForm } from "../seatform/SeatBookingForm";
+
 export default function RecruitmentArea() {
-  const handleBoxClick = (group: number, column: number, index: number) => {
-    console.log(`Clicked seat at Group ${group}, Column ${column}, Index ${index}`);
+  const [selectedSeat, setSelectedSeat] = useState<{ group: number; row?: number; index?: number } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleBoxClick = (group: number, row: number, index: number) => {
+    setSelectedSeat({ group, row, index });
+    setIsModalOpen(true);
+    console.log(`Clicked seat at Group ${group}, Row ${row}, Index ${index}`);
+  };
+
+  const handleBookingSubmit = (seatInfo: any, customerName: string) => {
+    console.log("Booking:", seatInfo, "Customer:", customerName);
   };
 
   const boxClass =
@@ -22,6 +34,7 @@ export default function RecruitmentArea() {
             onClick={() => handleBoxClick(1, 1, seatIndex)}
             className={boxClass}
           >
+            {/* Visual placeholder */}
             <span className="text-[3vw] sm:text-xs md:text-sm font-semibold">
               Vacant
             </span>
@@ -46,6 +59,14 @@ export default function RecruitmentArea() {
           </span>
         </div>
       </div>
+
+      {/* Seat Booking Form */}
+      <SeatBookingForm
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        seatInfo={selectedSeat}
+        onSubmit={handleBookingSubmit}
+      />
     </div>
   );
 }

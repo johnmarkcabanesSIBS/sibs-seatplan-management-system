@@ -1,18 +1,26 @@
 "use client";
 
+import { useState } from "react";
+import { SeatBookingForm } from "../seatform/SeatBookingForm";
+
 export default function TaAndPeCubicle() {
-  const handleBoxClick = (
-    group: number,
-    column: number,
-    index: number
-  ) => {
+  const [selectedSeat, setSelectedSeat] = useState<{ group: number; column?: number; index?: number } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleBoxClick = (group: number, column: number, index: number) => {
+    setSelectedSeat({ group, column, index });
+    setIsModalOpen(true);
     console.log(`Clicked seat at Group ${group}, Column ${column}, Index ${index}`);
+  };
+
+  const handleBookingSubmit = (seatInfo: any, customerName: string) => {
+    console.log("Booking:", seatInfo, "Customer:", customerName);
   };
 
   const boxClass =
     "border border-gray-400 rounded-xl bg-gray-50 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 active:scale-95 transition-all duration-200 shadow-sm w-[22vw] h-[10vh] xs:w-[20vw] sm:w-[14vw] md:w-[8vw] lg:w-[6vw] min-w-[60px] min-h-[45px] max-w-[120px] max-h-[70px]";
 
-  // Top group: 3 columns
+  // PE Cubicle seats
   const topGroupCounts = [2, 1, 1];
 
   return (
@@ -21,7 +29,7 @@ export default function TaAndPeCubicle() {
         TA and PE Cubicle
       </h2>
 
-      {/* Top group with title */}
+      {/* PE Cubicle */}
       <div className="flex flex-col items-center gap-4 w-full">
         <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#042C51] mb-2 text-center">
           PE Cubicle
@@ -52,7 +60,7 @@ export default function TaAndPeCubicle() {
         </div>
       </div>
 
-      {/* Bottom group with title */}
+      {/* TA Cubicle */}
       <div className="flex flex-col items-center gap-4 w-full">
         <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#042C51] mb-2 text-center">
           TA Cubicle
@@ -74,6 +82,14 @@ export default function TaAndPeCubicle() {
           ))}
         </div>
       </div>
+
+      {/* Seat Booking Form */}
+      <SeatBookingForm
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        seatInfo={selectedSeat}
+        onSubmit={handleBookingSubmit}
+      />
     </div>
   );
 }
